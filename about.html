@@ -47,59 +47,12 @@
 
       <h3 style="margin-top:1.25rem">Nossa Missão e Visão</h3>
       <p><strong>Missão:</strong> Capacitar decisões informadas usando IA que sempre aponte as evidências e incentive o pensamento crítico.<br>
-      <strong>Visão:</strong> Uma comunidade onde IAs são ferramentas transparentes, reverenciadas por sua fiabilidade e integradas ao processo científico, não um substituto para ele.</p>
+      <strong>Visão:</strong> Uma comunidade onde IAs são ferramentas transparentes, reverenciadas por sua viabilidade e integradas ao processo científico, não um substituto para ele.</p>
 
       <h3 style="margin-top:1rem">Contribua com contexto para o agente</h3>
       <p>Para melhorar as respostas, você pode fornecer contexto (link, PDF ou projeto). Em versões completas, esses envios passam por moderação antes de serem incorporados ao conjunto de treinamento.</p>
 
-      <div class="card" style="padding:1rem;margin-top:0.5rem">
-        <form id="contextForm">
-          <label>URL / Link da fonte
-            <input type="url" id="ctxUrl" placeholder="https://exemplo.org/paper" />
-          </label>
-          <label>Ou envie um arquivo (PDF)
-            <input type="file" id="ctxFile" accept="application/pdf" />
-          </label>
-          <label>Contexto adicional (opcional)
-            <textarea id="ctxNote" rows="3" placeholder="Breve nota sobre por que esta fonte é relevante..."></textarea>
-          </label>
-          <p class="note">Este protótipo não envia arquivos para servidor. Em uma versão funcional, os envios seriam validados e revisados por curadores.</p>
-          <div style="display:flex;gap:.5rem;margin-top:.5rem">
-            <button type="button" class="btn" id="ctxPreview">Visualizar</button>
-            <button type="button" class="btn primary" id="ctxSubmit">Enviar (protótipo)</button>
-          </div>
-          <div id="ctxStatus" aria-live="polite" style="margin-top:.5rem"></div>
-        </form>
-      </div>
-
-      <script>
-        document.getElementById('ctxPreview').addEventListener('click', function(){
-          const url = document.getElementById('ctxUrl').value.trim();
-          const file = document.getElementById('ctxFile').files[0];
-          const note = document.getElementById('ctxNote').value.trim();
-          const out = document.getElementById('ctxStatus');
-          if(url) {
-            out.textContent = 'URL selecionada: ' + url + (note? ' — nota: '+note : '');
-          } else if(file) {
-            out.textContent = 'Arquivo selecionado: ' + file.name + ' (' + Math.round(file.size/1024) + ' KB)';
-          } else {
-            out.textContent = 'Nenhuma fonte selecionada.';
-          }
-        });
-
-        document.getElementById('ctxSubmit').addEventListener('click', function(){
-          const url = document.getElementById('ctxUrl').value.trim();
-          const file = document.getElementById('ctxFile').files[0];
-          const out = document.getElementById('ctxStatus');
-          if(!url && !file) { out.textContent = 'Selecione um URL ou arquivo antes de enviar.'; return; }
-          out.textContent = 'Obrigado — envio registrado localmente (protótipo). Em produção, passaria por moderação.';
-          document.getElementById('ctxUrl').value = '';
-          document.getElementById('ctxFile').value = '';
-          document.getElementById('ctxNote').value = '';
-        });
-      </script>
-    </section>
-  </main>
+   
 
   <footer class="site-footer">
     <div class="container">
@@ -107,4 +60,5 @@
     </div>
   </footer>
 </body>
+
 </html>
