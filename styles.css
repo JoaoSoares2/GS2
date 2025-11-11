@@ -145,3 +145,37 @@ input[type="file"]{margin-top:.5rem;color:var(--muted)}
   .contact-page .card{margin:1rem;padding:1rem}
   .contact-page .actions{flex-direction:column;align-items:stretch}
 }
+
+/* Mobile improvements: header/nav stacking, full-width buttons, card padding tweaks */
+@media (max-width:768px){
+  .site-header .container{flex-direction:column;align-items:flex-start;gap:.5rem;padding:12px 0}
+  nav{width:100%;display:flex;flex-wrap:wrap;gap:.5rem}
+  nav a{flex:1 1 auto;text-align:center;padding:.6rem .5rem}
+  .hero{min-height:36vh;padding:2.5rem 0}
+  .hero h2{font-size:1.4rem}
+  .hero .lead{font-size:1rem}
+  .btn{font-size:0.95rem}
+  .card{padding:1rem}
+  .container{padding:12px}
+}
+
+@media (max-width:480px){
+  .site-header .container{padding:10px}
+  nav a{padding:.5rem .4rem;font-size:.95rem}
+  .hero h2{font-size:1.2rem}
+  .hero .lead{font-size:.95rem}
+  .hero .actions{flex-direction:column}
+  .hero .actions .btn{width:100%;justify-content:center}
+  .features{grid-template-columns:1fr}
+  .card{border-radius:12px;padding:0.9rem}
+  .sim-answer{font-size:0.98rem}
+  .sim-title{font-size:1.05rem}
+  .sim-feedback{flex-wrap:wrap}
+  nav{justify-content:center}
+}
+
+/* Disable heavy hover lifts on small screens to avoid layout shifts */
+@media (max-width:900px){
+  .card:hover{transform:none;box-shadow:var(--shadow)}
+}
+
