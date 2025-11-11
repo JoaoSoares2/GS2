@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simulação — IAConfiável</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo">IAConfiável - Simulação</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">Sobre Nós</a>
+        <a href="simulacao.html">Simulação</a>
+        <a href="contact.html">Contato</a>
+       
+    </div>
+  </header> 
+  <main class="container" style="padding-top:1rem">
+    <section class="card">
+      <h2>Simulação</h2>
+      <p>Digite sua pergunta e (opcional) forneça contexto para simular como a IA responderia com fontes.</p>
+
+      <label>Digite aqui
+        <textarea id="simInput" rows="5" placeholder="Ex.: Explique o mecanismo X em termos simples..."></textarea>
+      </label>
+
+      <label>Contexto (URL)
+        <input type="url" id="simUrl" placeholder="https://exemplo.org/paper" />
+      </label>
+
+      <label>Ou arquivo (simulado)
+        <input type="file" id="simFile" accept="application/pdf" />
+      </label>
+
+      <div style="display:flex;gap:.5rem;margin-top:.75rem">
+        <button id="genBtn" class="btn primary">Gerar Resposta</button>
+        <button id="clearBtn" class="btn">Limpar</button>
+      </div>
+
+      <div id="simResult" class="sim-result card" style="margin-top:1rem;display:none">
+        <h3 class="sim-title">Resposta simulada</h3>
+        <div id="simAnswer" class="sim-answer"></div>
+
+        <h4 class="sim-fontes">Fontes confiáveis</h4>
+        <ul id="simSources" class="sim-sources"></ul>
+
+        <div class="sim-feedback">
+          <span class="sim-feedback-label">A resposta foi útil?</span>
+          <button id="thumbsUp" class="btn">👍</button>
+          <button id="thumbsDown" class="btn">👎</button>
+          <span id="fbMsg" class="sim-feedback-msg"></span>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top:1rem">Observação: esta página é um protótipo front-end. Em produção, o botão "Gerar Resposta" chamaria um serviço que combina modelos com um índice de papers e retornaria a resposta com citações reais (DOI, autores, ano).</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2025 IAConfiável — Protótipo de simulação.</small>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const genBtn = document.getElementById('genBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const simResult = document.getElementById('simResult');
+      const simAnswer = document.getElementById('simAnswer');
+      const simSources = document.getElementById('simSources');
+      const thumbsUp = document.getElementById('thumbsUp');
+      const thumbsDown = document.getElementById('thumbsDown');
+      const fbMsg = document.getElementById('fbMsg');
+
+      const trusted = [
+        {name:'Nature', url:'https://www.nature.com'},
+        {name:'IEEE', url:'https://ieeexplore.ieee.org'},
+        {name:'PubMed', url:'https://pubmed.ncbi.nlm.nih.gov'}
+      ];
+
+      genBtn && genBtn.addEventListener('click', async function(){
+        const q = document.getElementById('simInput').value.trim();
+        const url = document.getElementById('simUrl').value.trim();
+        const file = document.getElementById('simFile').files[0];
+        if(!q){ alert('Escreva uma pergunta antes de gerar a resposta.'); return; }
+
+        simAnswer.innerHTML = '<div class="sim-block"><em>Aguarde, consultando IA...</em></div>';
+        simSources.innerHTML = '';
+        simResult.style.display = 'block';
+        fbMsg.textContent = '';
+        thumbsUp.disabled = true; thumbsDown.disabled = true;
+
+        // Respostas prontas (mock) variadas
+        const respostasProntas = [
+          {
+            resposta: 'O mecanismo X é amplamente estudado e sua eficácia foi comprovada em diversos artigos revisados por pares. Recomenda-se consultar Nature e IEEE para detalhes técnicos.',
+            fontes: [
+              { nome: 'Nature', url: 'https://www.nature.com' },
+              { nome: 'IEEE', url: 'https://ieeexplore.ieee.org' }
+            ],
+            topicos: ['Eficácia do mecanismo X', 'Estudos revisados por pares', 'Fontes técnicas'],
+            contexto: url || (file ? `Arquivo: ${file.name}` : '')
+          },
+          {
+            resposta: 'Segundo pesquisas recentes, o mecanismo X apresenta limitações importantes que devem ser consideradas. PubMed traz revisões sistemáticas sobre o tema.',
+            fontes: [
+              { nome: 'PubMed', url: 'https://pubmed.ncbi.nlm.nih.gov' },
+              { nome: 'Nature', url: 'https://www.nature.com' }
+            ],
+            topicos: ['Limitações do mecanismo X', 'Revisões sistemáticas', 'Cuidados na aplicação'],
+            contexto: url || (file ? `Arquivo: ${file.name}` : '')
+          },
+          {
+            resposta: 'A aplicação do mecanismo X em ambientes clínicos requer validação rigorosa. Estudos da IEEE e PubMed destacam recomendações para uso responsável.',
+            fontes: [
+              { nome: 'IEEE', url: 'https://ieeexplore.ieee.org' },
+              { nome: 'PubMed', url: 'https://pubmed.ncbi.nlm.nih.gov' }
+            ],
+            topicos: ['Validação clínica', 'Recomendações de uso', 'Responsabilidade científica'],
+            contexto: url || (file ? `Arquivo: ${file.name}` : '')
+          },
+          {
+            resposta: 'Diversos autores apontam que o mecanismo X pode ser otimizado com base em evidências recentes. Consulte as fontes para estratégias de aprimoramento.',
+            fontes: [
+              { nome: 'Nature', url: 'https://www.nature.com' },
+              { nome: 'IEEE', url: 'https://ieeexplore.ieee.org' },
+              { nome: 'PubMed', url: 'https://pubmed.ncbi.nlm.nih.gov' }
+            ],
+            topicos: ['Otimização do mecanismo X', 'Evidências recentes', 'Estratégias de aprimoramento'],
+            contexto: url || (file ? `Arquivo: ${file.name}` : '')
+          }
+        ];
+        // Seleciona uma resposta aleatória
+        const respostaPronta = respostasProntas[Math.floor(Math.random() * respostasProntas.length)];
+        let html = `<div class="sim-block">
+          <div class="sim-question"><strong>Pergunta:</strong> ${q.length>200? q.slice(0,200)+'...' : q}</div>
+          <div class="sim-resumo"><strong>Resposta da IA:</strong> ${respostaPronta.resposta}</div>
+          <ul class="sim-topicos">${(respostaPronta.topicos||[]).map(t=>`<li>${t}</li>`).join('')}</ul>
+          <div class="sim-contexto">${respostaPronta.contexto? `<strong>Contexto:</strong> ${respostaPronta.contexto}` : ''}</div>
+          <div class="sim-limite"><strong>Atenção:</strong> Sempre verifique as fontes originais antes de tomar decisões.</div>
+        </div>`;
+        simAnswer.innerHTML = html;
+        simSources.innerHTML = '';
+        (respostaPronta.fontes||[]).forEach(s=>{
+          const li = document.createElement('li');
+          li.innerHTML = `<span class="sim-source-label">${s.nome}</span> <a href="${s.url}" target="_blank" rel="noopener" class="sim-source-link">${s.url}</a>`;
+          simSources.appendChild(li);
+        });
+        thumbsUp.disabled = false; thumbsDown.disabled = false;
+      });
+
+      clearBtn && clearBtn.addEventListener('click', function(){
+        document.getElementById('simInput').value = '';
+        document.getElementById('simUrl').value = '';
+        document.getElementById('simFile').value = '';
+        simResult.style.display = 'none';
+      });
+
+      function handleFeedback(type){
+        thumbsUp.disabled = true; thumbsDown.disabled = true;
+        fbMsg.textContent = 'Obrigado pelo feedback! Ele ajuda a IA a evoluir.';
+        // Em produção, enviar feedback ao backend com tipo, pergunta e contexto
+      }
+
+      thumbsUp && thumbsUp.addEventListener('click', function(){ handleFeedback('up'); });
+      thumbsDown && thumbsDown.addEventListener('click', function(){ handleFeedback('down'); });
+    })();
+  </script>
+</body>
+</html>

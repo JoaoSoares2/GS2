@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sobre Nós — IAConfiável</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+ <header class="site-header">
+    <div class="container">
+      <h1 class="logo">IAConfiável - Sobre Nós</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">Sobre Nós</a>
+        <a href="simulacao.html">Simulação</a>
+        <a href="contact.html">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container">
+      <h2>Sobre Nós</h2>
+      <p>Nossa missão é conscientizar sobre o uso responsável da inteligência artificial, fornecendo respostas que sempre indiquem as fontes científicas utilizadas. Projetamos a IA para aprender somente a partir de conteúdo científico verificável — papers, teses e documentações — com processos de curadoria e moderação.</p>
+
+      <div class="about-grid" style="display:grid;grid-template-columns:1fr;gap:1rem;margin-top:1rem">
+        <div class="card" style="padding:1rem">
+          <h3 style="display:flex;align-items:center;gap:.6rem"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l7 3v5c0 5-3.5 9.7-7 12-3.5-2.3-7-7-7-12V5l7-3z" stroke="#0b5fff" stroke-width="1.2" fill="#eaf2ff"/></svg>Por que precisamos de uma IA confiável?</h3>
+          <p>As IAs são ferramentas poderosas, mas podem reproduzir vieses, desatualizações e erros se treinadas em fontes não confiáveis. Uma IA confiável prioriza transparência, evidências e o fornecimento explícito de fontes para que humanos possam checar e contextualizar as respostas.</p>
+        </div>
+
+        <div class="card" style="padding:1rem">
+          <h3 style="display:flex;align-items:center;gap:.6rem"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16M4 12h16M4 18h16" stroke="#0b5fff" stroke-width="1.2" stroke-linecap="round"/></svg>Perigo de acreditar cegamente</h3>
+          <p>Confiar sem verificar pode levar à disseminação de desinformação, decisões clínicas/legais erradas e perda de responsabilidade. Sempre questione: quem escreveu a fonte? É revisada por pares? Há conflito de interesse?</p>
+        </div>
+
+        <div class="card" style="padding:1rem">
+          <h3 style="display:flex;align-items:center;gap:.6rem"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="#0b5fff" stroke-width="1.2" fill="#eef6ff"/></svg>Como a ScientiaAI promove verificação</h3>
+          <ul>
+            <li>Treinamento limitado a fontes acadêmicas e documentações oficiais.</li>
+            <li>Citações visíveis em cada resposta, com link, DOI e metadados quando disponíveis.</li>
+            <li>Sistema de feedback para que usuários indiquem imprecisões e submetam novas fontes para curadoria.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top:1.25rem">Nossa Missão e Visão</h3>
+      <p><strong>Missão:</strong> Capacitar decisões informadas usando IA que sempre aponte as evidências e incentive o pensamento crítico.<br>
+      <strong>Visão:</strong> Uma comunidade onde IAs são ferramentas transparentes, reverenciadas por sua fiabilidade e integradas ao processo científico, não um substituto para ele.</p>
+
+      <h3 style="margin-top:1rem">Contribua com contexto para o agente</h3>
+      <p>Para melhorar as respostas, você pode fornecer contexto (link, PDF ou projeto). Em versões completas, esses envios passam por moderação antes de serem incorporados ao conjunto de treinamento.</p>
+
+      <div class="card" style="padding:1rem;margin-top:0.5rem">
+        <form id="contextForm">
+          <label>URL / Link da fonte
+            <input type="url" id="ctxUrl" placeholder="https://exemplo.org/paper" />
+          </label>
+          <label>Ou envie um arquivo (PDF)
+            <input type="file" id="ctxFile" accept="application/pdf" />
+          </label>
+          <label>Contexto adicional (opcional)
+            <textarea id="ctxNote" rows="3" placeholder="Breve nota sobre por que esta fonte é relevante..."></textarea>
+          </label>
+          <p class="note">Este protótipo não envia arquivos para servidor. Em uma versão funcional, os envios seriam validados e revisados por curadores.</p>
+          <div style="display:flex;gap:.5rem;margin-top:.5rem">
+            <button type="button" class="btn" id="ctxPreview">Visualizar</button>
+            <button type="button" class="btn primary" id="ctxSubmit">Enviar (protótipo)</button>
+          </div>
+          <div id="ctxStatus" aria-live="polite" style="margin-top:.5rem"></div>
+        </form>
+      </div>
+
+      <script>
+        document.getElementById('ctxPreview').addEventListener('click', function(){
+          const url = document.getElementById('ctxUrl').value.trim();
+          const file = document.getElementById('ctxFile').files[0];
+          const note = document.getElementById('ctxNote').value.trim();
+          const out = document.getElementById('ctxStatus');
+          if(url) {
+            out.textContent = 'URL selecionada: ' + url + (note? ' — nota: '+note : '');
+          } else if(file) {
+            out.textContent = 'Arquivo selecionado: ' + file.name + ' (' + Math.round(file.size/1024) + ' KB)';
+          } else {
+            out.textContent = 'Nenhuma fonte selecionada.';
+          }
+        });
+
+        document.getElementById('ctxSubmit').addEventListener('click', function(){
+          const url = document.getElementById('ctxUrl').value.trim();
+          const file = document.getElementById('ctxFile').files[0];
+          const out = document.getElementById('ctxStatus');
+          if(!url && !file) { out.textContent = 'Selecione um URL ou arquivo antes de enviar.'; return; }
+          out.textContent = 'Obrigado — envio registrado localmente (protótipo). Em produção, passaria por moderação.';
+          document.getElementById('ctxUrl').value = '';
+          document.getElementById('ctxFile').value = '';
+          document.getElementById('ctxNote').value = '';
+        });
+      </script>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2025 IAConfiável — Sobre nós.</small>
+    </div>
+  </footer>
+</body>
+</html>

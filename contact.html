@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fale Conosco — IAConfiável</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="contact-page">
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo">IAConfiável - Contato</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">Sobre Nós</a>
+        <a href="simulacao.html">Simulação</a>
+        <a href="contact.html">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:1rem">
+    <section class="card" style="max-width:760px;margin:0 auto;">
+      <h2>Fale Conosco</h2>
+      <p class="muted">Envie sua dúvida, sugestão ou feedback. Responderemos por e-mail quando necessário.</p>
+
+      <form id="contactForm" novalidate>
+        <label>Nome completo
+          <input id="fullName" type="text" placeholder="Seu nome completo" required />
+          <div class="error-text" id="errName" aria-live="polite"></div>
+        </label>
+
+        <label>E-mail
+          <input id="email" type="email" placeholder="seu@email.com" required />
+          <div class="error-text" id="errEmail" aria-live="polite"></div>
+        </label>
+
+        <label>Mensagem
+          <textarea id="message" rows="6" placeholder="Escreva sua mensagem..." required></textarea>
+          <div class="error-text" id="errMessage" aria-live="polite"></div>
+        </label>
+
+        <div style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem">
+          <button type="submit" class="btn primary">Enviar</button>
+          <button type="button" id="resetBtn" class="btn">Limpar</button>
+        </div>
+
+        <div id="formStatus" role="status" aria-live="polite" style="margin-top:.8rem"></div>
+      </form>
+
+      <hr style="margin:1.25rem 0;border-color:rgba(255,255,255,0.04)" />
+
+      <h4>Outros contatos</h4>
+      <p class="muted">Siga e contribua:</p>
+      <ul>
+        <li><a href="https://github.com/" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="mailto:IAconfiavel@contato.com.br">IAconfiavel@contato.com.br</a></li>
+      </ul>
+
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2025 IAConfiável — Contato</small>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const form = document.getElementById('contactForm');
+      const fullName = document.getElementById('fullName');
+      const email = document.getElementById('email');
+      const message = document.getElementById('message');
+      const errName = document.getElementById('errName');
+      const errEmail = document.getElementById('errEmail');
+      const errMessage = document.getElementById('errMessage');
+      const status = document.getElementById('formStatus');
+      const resetBtn = document.getElementById('resetBtn');
+
+      function validateName(name){
+        if(!name || name.trim().length === 0) return 'Por favor, informe seu nome.';
+        const parts = name.trim().split(/\s+/);
+        if(parts.length < 2) return 'Informe o nome completo (nome e sobrenome).';
+        if(parts.some(p=>p.length < 2)) return 'Use nomes com pelo menos 2 caracteres.';
+        return '';
+      }
+
+      function validateEmail(mail){
+        if(!mail || mail.trim().length === 0) return 'Por favor, informe seu e-mail.';
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!re.test(mail)) return 'E-mail inválido.';
+        return '';
+      }
+
+      function validateMessage(msg){
+        if(!msg || msg.trim().length === 0) return 'Escreva uma mensagem.';
+        if(msg.trim().length < 10) return 'Mensagem muito curta (min 10 caracteres).';
+        return '';
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        // limpar erros
+        errName.textContent = '';
+        errEmail.textContent = '';
+        errMessage.textContent = '';
+        status.textContent = '';
+
+        const nameErr = validateName(fullName.value);
+        const emailErr = validateEmail(email.value);
+        const msgErr = validateMessage(message.value);
+
+        let hasError = false;
+        if(nameErr){ errName.textContent = nameErr; hasError = true; }
+        if(emailErr){ errEmail.textContent = emailErr; hasError = true; }
+        if(msgErr){ errMessage.textContent = msgErr; hasError = true; }
+
+        if(hasError){
+          status.textContent = 'Há campos com problemas. Revise-os antes de enviar.';
+          status.className = 'error-text';
+          return;
+        }
+
+        // Em produção, aqui chamaria o endpoint para enviar o feedback.
+        status.textContent = 'Feedback enviado com sucesso. Obrigado por contribuir!';
+        status.className = 'alert-success';
+
+        // limpar campos
+        fullName.value = '';
+        email.value = '';
+        message.value = '';
+      });
+
+      resetBtn.addEventListener('click', function(){
+        fullName.value = '';
+        email.value = '';
+        message.value = '';
+        errName.textContent = '';
+        errEmail.textContent = '';
+        errMessage.textContent = '';
+        status.textContent = '';
+        status.className = '';
+      });
+    })();
+  </script>
+</body>
+</html>
